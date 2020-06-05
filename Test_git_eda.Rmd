@@ -6,7 +6,7 @@ nhl_data <- read_csv("nhl_pit_sj_game6.csv")
 ```{r}
 library(ggplot2)
 plot_event <- ggplot(nhl_data, aes(event)) +
-  geom_bar(col = "red") 
+  geom_bar(col = "red", fill = "blue") 
 plot_event
 
 ```
