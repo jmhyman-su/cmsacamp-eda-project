@@ -1,0 +1,21 @@
+library(tidyverse)
+nhl <- read_csv("nhl_pit_sj_game6.csv")
+str(nhl)
+
+
+
+```{r}
+nhl %>%
+  filter(shot_attempt == 1) %>%
+  ggplot(aes(x = x_cord, y = y_cord, col = team, size = event == "goal")) +
+  geom_point(alpha = 0.3) +
+  theme_bw()
+## change colors to team colors
+## reflect sharks on left and penguins oon right of vertical line
+## add shot type as size? or color scale
+## denote goals with text
+## impose over rink image 
+```
+
+
+
