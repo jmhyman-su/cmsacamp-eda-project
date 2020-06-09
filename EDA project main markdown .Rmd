@@ -15,8 +15,9 @@ pitt <- nhl %>%
 nhl_shots <- bind_rows(sjs, pitt)
 nhl_shots %>%
   filter(!is.na(event_type)) %>%
-  ggplot(aes(x = x_cord, y = y_cord, col = event_type)) +
-  geom_point(alpha = 0.3) +
+  ggplot(aes(x = x_cord, y = y_cord, col = event_type, label = event)) +
+  geom_point(alpha = 0.8) +
+  geom_text(data=subset(nhl_shots, event == "goal"), show.legend = FALSE) +
   theme_bw() +
   coord_fixed()
 ## change colors to team colors
