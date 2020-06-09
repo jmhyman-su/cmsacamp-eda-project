@@ -5,17 +5,60 @@ str(nhl)
 
 
 ```{r}
-nhl %>%
-  filter(shot_attempt == 1) %>%
-  ggplot(aes(x = x_cord, y = y_cord, col = team, size = event == "goal")) +
+sjs <- nhl %>%
+  filter(shot_attempt == 1, team == "San Jose Sharks") %>%
+  mutate(x_cord = x_cord*(-1))
+pitt <- nhl %>%
+  filter(shot_attempt == 1, team == "Pittsburgh Penguins") %>%
+  mutate(x_cord = x_cord)
+
+nhl_shots <- bind_rows(sjs, pitt)
+nhl_shots %>%
+  filter(!is.na(event_type)) %>%
+  ggplot(aes(x = x_cord, y = y_cord, col = event_type)) +
   geom_point(alpha = 0.3) +
-  theme_bw()
+  theme_bw() +
+  coord_fixed()
 ## change colors to team colors
 ## reflect sharks on left and penguins oon right of vertical line
 ## add shot type as size? or color scale
 ## denote goals with text
 ## impose over rink image 
+
+
+
 ```
 
 
+```{r}
+## graphing shot increase after penalties 
+## ecdf
+nhl %>%
+  ggplot(aes(x = cum2)) +
+  stat_ecdf() +
+  geom_vline(xintercept = 8) +
+  geom_vline(xintercept = 110) +
+  geom_vline(xintercept = 118) +
+  geom_vline(xintercept = 133)
+
+  
+## line graph (need to fix hms time to numeric and then mutate so that vertical lines can be added). add shading for penalty length
+nhl %>%
+  filter(period == 1) %>%
+  ggplot(aes(x = period_time, y = cumulative_shots)) +
+  geom_line() 
+nhl %>%
+  filter(period == 2) %>%
+  ggplot(aes(x = period_time, y = cum2)) +
+  geom_line()
+nhl_data %>%
+  filter(period == 3) %>%
+  ggplot(aes(x = period_time, y = cumulative_shots)) +
+  geom_line()
+
+nhl$period_time <- nhl$period_time / 60
+nhl$period_time
+
+nhl$cumulative_shots <- cumsum(nhl$shot_attempt)
+```
 
